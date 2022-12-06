@@ -1,0 +1,79 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.swing.JOptionPane;
+
+
+public class Conexion
+{
+	public static final String controlador="com.mysql.cj.jdbc.Driver";
+	public static final String url="jdbc:mysql://localhost:3306/datos";
+	public static final String usuario="root";
+	public static final String clave="1234";
+	
+	static
+	{
+		try
+		{
+			Class.forName(controlador);
+		}
+		catch(ClassNotFoundException e)
+		{
+			System.out.println("error al cargar el controlador");
+			e.printStackTrace();
+		}
+	}
+
+	//public static void main(String[]args)
+	public static Connection conectar()	
+	{
+		Connection Conexion=null;
+		try
+		{
+			Conexion=DriverManager.getConnection(url,usuario,clave);
+			System.out.println("Conexion exitosa");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	  return Conexion;
+	}
+
+
+Connection cn=null;
+Statement stmt=null;
+variables var=new variables();
+
+
+public variables Agregar()
+{
+	try
+	{
+		cn=Conexion.conectar();
+		String consulta="INSERT INTO datos.registro VALUES('"+variables.No+"','"+variables.Grupo+"','"+variables.Carrera+"','"+variables.Para+"','"+variables.comentario+"','"+variables.Fecha+"') ";
+		
+		stmt=cn.createStatement();
+		stmt.executeUpdate(consulta);
+		JOptionPane.showMessageDialog(null, "Registro Guardado");
+		cn.close();
+		stmt.close();
+		
+		
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	
+	return var;
+
+}
+
+
+
+}
+
